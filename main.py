@@ -13,32 +13,14 @@ import os
 import random
 
 import discord
-from colorama import Fore
 from discord.ext import commands, tasks
 
+from utils import logger
 from app import server
 
 TOKEN = os.environ["TOKEN"]
 INTENTS = discord.Intents.all()
 COMMAND_PREFIX = "/"
-
-formatter = logging.Formatter(
-    "{0}[%(asctime)s] {1}[%(levelname)s] {2}%(name)s {3}- %(message)s".format(
-        Fore.GREEN,
-        Fore.BLUE,
-        Fore.MAGENTA,
-        Fore.RESET,
-    ),
-    "%d-%m-%Y %H:%M:%S",
-)
-
-handler = logging.StreamHandler()
-handler.setLevel(logging.INFO)
-handler.setFormatter(formatter)
-
-root = logging.getLogger()
-root.setLevel(logging.INFO)
-root.addHandler(handler)
 
 log = logging.getLogger("main")
 
@@ -85,6 +67,7 @@ class Bot(commands.AutoShardedBot):
 
     # Set up and start tasks, load cogs, sync tree
     async def setup_hook(self):
+        await logger.setup_custom_format()
         await self.start_tasks()
         await self.load_cogs()
         await self.tree.sync()

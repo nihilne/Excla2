@@ -16,6 +16,13 @@ from pymongo import AsyncMongoClient
 uri = os.getenv("MONGODB_URI")
 cert = glob("./certs/X509-cert*.pem")[0]
 
+log = logging.getLogger(__name__)
+
+
+if not uri:
+    log.error("URI not found as environment variable, exiting...")
+    exit()
+
 
 class MongoDB:
     def __init__(
@@ -23,7 +30,6 @@ class MongoDB:
         uri: str,
         x509_cert: str,
     ):
-        self.log = logging.getLogger(__name__)
         self.client = None
         self.db = None
         self.uri = uri
@@ -40,21 +46,21 @@ class MongoDB:
             tlsCertificateKeyFile=self.x509_cert,
         )
         self.db = self.client["excla2"]
-        self.log.info("Connected to MongoDB client.")
+        log.info("Connected to MongoDB client.")
 
     async def close(self) -> None:
         if self.client:
             await self.client.close()
-            self.log.info("Connection to MongoDB client closed.")
+            log.info("Connection to MongoDB client closed.")
         else:
-            self.log.warning("Could not close connection: No client found.")
+            log.warning("Could not close connection: No client found.")
 
     async def ping(self):
         if self.client:
             ping = await self.client.admin.command("ping")
-            self.log.info(f"Pinged MongoDB database with response {ping}.")
+            log.info(f"Pinged MongoDB database with response {ping}.")
         else:
-            self.log.warning("Could not ping: No client found.")
+            log.warning("Could not ping: No client found.")
 
 
 db = MongoDB(uri, cert)

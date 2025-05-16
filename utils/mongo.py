@@ -40,21 +40,21 @@ class MongoDB:
             tlsCertificateKeyFile=self.x509_cert,
         )
         self.db = self.client["excla2"]
-        self.log.info("Set up MongoDB client and db successfully")
+        self.log.info("Connected to MongoDB client.")
 
     async def close(self) -> None:
         if self.client:
             await self.client.close()
-            self.log.info("MongoDB connection closed successfully")
+            self.log.info("Connection to MongoDB client closed.")
         else:
-            self.log.warning("Could not close connection: No client found")
+            self.log.warning("Could not close connection: No client found.")
 
     async def ping(self):
         if self.client:
             ping = await self.client.admin.command("ping")
-            self.log.info(f"Pinged MongoDB database with response {ping}")
+            self.log.info(f"Pinged MongoDB database with response {ping}.")
         else:
-            self.log.warning("Could not ping: No client found")
+            self.log.warning("Could not ping: No client found.")
 
 
 db = MongoDB(uri, cert)

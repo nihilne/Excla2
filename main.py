@@ -68,7 +68,7 @@ class Bot(commands.AutoShardedBot):
     # Set up and start tasks, load cogs, sync tree
     async def setup_hook(self):
         await logger.setup_custom_format()
-        await mongo.db.ping()
+        await mongo.db.connect()
         await self.start_tasks()
         await self.load_cogs()
         await self.tree.sync()

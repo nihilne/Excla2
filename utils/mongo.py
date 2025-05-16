@@ -24,9 +24,12 @@ class MongoDB:
         x509_cert: str,
     ):
         self.log = logging.getLogger(__name__)
+        self.client = None
+        self.db = None
         self.uri = uri
         self.x509_cert = x509_cert
 
+    async def connect(self) -> None:
         self.client = AsyncMongoClient(
             self.uri,
             authSource="$external",

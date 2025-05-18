@@ -36,8 +36,8 @@ class Bot(commands.AutoShardedBot):
         log.info(f"{len(self.guilds)} servers")
 
     async def close(self):
-        log.info("Cleaning up and shutting down...")
         await mongo.db.close()
+        log.info("Shutting down...")
 
     async def load_cogs(self):
         """Loads cogs from a specific directory"""

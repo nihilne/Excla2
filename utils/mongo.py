@@ -65,5 +65,6 @@ if not cert_files:
 if len(cert_files) > 1:
     raise ValueError("More than one certificate files found.")
 
+cert = cert_files[0]
 
 db = MongoDB(uri, cert)

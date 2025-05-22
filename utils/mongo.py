@@ -27,6 +27,14 @@ class MongoDB:
         self.uri = uri
         self.x509_cert = x509_cert
 
+    def __getattr__(self, name: str):
+        if self.db is None:
+            raise AttributeError(
+                "Database connection not initialized, can't access collection"
+            )
+
+        return self.db[name]
+
     async def connect(self) -> None:
         self.client = AsyncMongoClient(
             self.uri,

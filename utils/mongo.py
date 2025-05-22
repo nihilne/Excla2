@@ -13,15 +13,7 @@ from glob import glob
 
 from pymongo import AsyncMongoClient
 
-uri = os.getenv("MONGODB_URI")
-cert = glob("./certs/X509-cert*.pem")[0]
-
 log = logging.getLogger(__name__)
-
-
-if not uri:
-    log.error("URI not found as environment variable, exiting...")
-    exit()
 
 
 class MongoDB:
@@ -49,18 +41,29 @@ class MongoDB:
         log.info("Connected to MongoDB client.")
 
     async def close(self) -> None:
-        if self.client:
-            await self.client.close()
-            log.info("Connection to MongoDB client closed.")
-        else:
-            log.warning("Could not close connection: No client found.")
+        if self.client is None:
+            raise RuntimeError("Client doesn't exist, cannot close connection.")
+
+        await self.client.close()
+        log.info("Connection to MongoDB client closed.")
 
     async def ping(self):
-        if self.client:
-            ping = await self.client.admin.command("ping")
-            log.info(f"Pinged MongoDB database with response {ping}.")
-        else:
-            log.warning("Could not ping: No client found.")
+        if self.client is None:
+            raise RuntimeError("Client doesn't exist, cannot ping.")
+
+        ping = await self.client.admin.command("ping")
+        log.info(f"Pinged MongoDB database with response {ping}.")
+
+
+uri = os.getenv("MONGODB_URI")
+if not uri:
+    raise ValueError("MongoDB URI not found as environment variable.")
+
+cert_files = glob("./certs/X509-cert*.pem")
+if not cert_files:
+    raise ValueError("No X509 certificate found.")
+if len(cert_files) > 1:
+    raise ValueError("More than one certificate files found.")
 
 
 db = MongoDB(uri, cert)

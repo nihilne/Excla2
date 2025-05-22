@@ -7,7 +7,7 @@ License: GPL-3.0
 Description: A data file that contains the fish that the economy uses
 """
 
-fishes = {
+all_fish = {
     "shark": {
         "name": "Shark",
         "description": "A Shark!",

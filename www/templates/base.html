@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Excla!{% endblock %}</title>
+
+        <!-- METADATA -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <!-- STYLESHEETS & LINKS -->
+        <link rel="stylesheet" href="CHANGE STYLESHEET!!!" />
+        <link rel="canonical" href="https://excla.xyz" />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="/www/static/images/favicon.ico"
+        />
+
+        <!-- OPEN GRAPH -->
+        <meta name="title" content="Excla!" property="og:title" />
+        <meta name="url" content="https://excla.xyz" property="og:url" />
+        <meta name="theme-color" content="#edf2f4" property="og:theme-color" />
+        <meta name="type" content="website" property="og:type" />
+        <meta
+            name="keywords"
+            content="Discord, Discord Bot, Excla, Slash Commands, Moderation Bot, Fun Bot, Welcome Bot, Economy Bot, Enitoxy"
+            property="og:keywords"
+        />
+        <meta
+            name="description"
+            content="Moderation, fun, and fish. That's it."
+            property="og:description"
+        />
+    </head>
+    <script src="/www/static/scripts/htmx.min.js"></script>
+    <body>
+        {% include "includes/header.html" %}
+
+        <main>{% block content %}{% endblock %}</main>
+
+        {% include "includes/footer.html" %}
+    </body>
+</html>

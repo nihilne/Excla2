@@ -1,2 +1,5 @@
-/* tailwindcss -i ./www/src/tailwind.css -o ./www/static/css/styles.css --watch */
 @import "tailwindcss";
+@font-face {
+    font-family: Montserrat;
+    src: url("/www/static/fonts/montserrat/Montserrat-Bold.ttf");
+}

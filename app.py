@@ -37,3 +37,7 @@ async def robots():
 @app.get("/sitemap.xml")
 async def sitemap():
     return FileResponse("static/sitemap.xml", media_type="text/plain")
+
+
+if __name__ == "__main__":
+    server.run()

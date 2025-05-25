@@ -31,12 +31,12 @@ async def root(request: Request):
 
 @app.get("/robots.txt")
 async def robots():
-    return FileResponse("static/robots.txt", media_type="text/plain")
+    return FileResponse("www/static/robots.txt", media_type="text/plain")
 
 
 @app.get("/sitemap.xml")
 async def sitemap():
-    return FileResponse("static/sitemap.xml", media_type="text/plain")
+    return FileResponse("www/static/sitemap.xml", media_type="text/plain")
 
 
 if __name__ == "__main__":

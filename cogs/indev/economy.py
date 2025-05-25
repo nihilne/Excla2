@@ -8,14 +8,12 @@ Description: A cog/module containing economy commands (fishing)
 """
 
 import logging
-import random
 
 from discord import Embed, Interaction, app_commands
 from discord.app_commands import Choice
 from discord.ext import commands
 
-from data.fish import fishes
-from utils import db
+from utils import logger, mongo
 
 log = logging.getLogger(__name__)
 
@@ -180,7 +178,7 @@ class Economy(commands.Cog):
 
             embed.add_field(
                 name=f"{fish_amount} {fish_name} {fish_emoji} x {fish_value}",
-                value=f"Total: {fish_amount*fish_value}",
+                value=f"Total: {fish_amount * fish_value}",
                 inline=False,
             )
 
@@ -202,7 +200,7 @@ class Economy(commands.Cog):
 
         embed = Embed(
             title="Your Balance",
-            description=f"{user_inventory["bits"]} bits",
+            description=f"{user_inventory['bits']} bits",
         )
         return await interaction.response.send_message(embed=embed)
 
@@ -235,8 +233,8 @@ class Economy(commands.Cog):
         item_emoji = await self.get_emoji(item)
         embed = Embed(title="Sold!", description="")
         embed.add_field(
-            name=f"{sale["amount"]} x {item_emoji} {item_name}",
-            value=f"Sold for {sale["value"]} bits",
+            name=f"{sale['amount']} x {item_emoji} {item_name}",
+            value=f"Sold for {sale['value']} bits",
             inline=False,
         )
 

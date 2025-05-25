@@ -1,4 +1,2 @@
 /* tailwindcss -i ./www/src/tailwind.css -o ./www/static/css/styles.css --watch */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";

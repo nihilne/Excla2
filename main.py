@@ -42,6 +42,10 @@ class Bot(commands.AutoShardedBot):
     async def load_cogs(self):
         """Loads cogs from a specific directory"""
         for cog_file in os.listdir("./cogs"):
+            if cog_file.endswith("indev"):
+                log.info("Ignoring indev folder...")
+                pass
+
             if cog_file.endswith(".py"):
                 await self.load_extension(f"cogs.{cog_file[:-3]}")
                 log.info(f"Loaded {cog_file}")

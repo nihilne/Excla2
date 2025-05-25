@@ -1,3 +1,4 @@
+/* tailwindcss -i ./www/src/tailwind.css -o ./www/css/styles.css */
 @import "tailwindcss";
 @font-face {
     font-family: Montserrat;

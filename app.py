@@ -25,7 +25,7 @@ server = uvicorn.Server(config)
 async def root(request: Request):
     return templates.TemplateResponse(
         request=request,
-        name="index/index.html",
+        name="home/index.html",
     )
 
 

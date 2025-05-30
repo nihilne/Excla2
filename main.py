@@ -19,6 +19,9 @@ from utils import logger, mongo
 from app import server
 
 TOKEN = os.environ["TOKEN"]
+if not TOKEN:
+    raise ValueError("Discord token not found.")
+
 INTENTS = discord.Intents.all()
 COMMAND_PREFIX = "/"
 

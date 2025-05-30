@@ -1,6 +1,14 @@
-/* tailwindcss -i ./www/src/tailwind.css -o ./www/css/styles.css */
+/* tailwindcss -i ./www/src/tailwind.css -o ./www/static/css/styles.css */
 @import "tailwindcss";
+@source "./www/templates/**/*.html";
 @font-face {
-    font-family: Montserrat;
-    src: url("/www/static/fonts/montserrat/Montserrat-Bold.ttf");
+    font-family: "Montserrat";
+    src: url("/static/fonts/montserrat/Montserrat-Bold.ttf");
+}
+@theme {
+    --font-montserrat: "Montserrat", sans-serif;
+    --color-excla-red: #ef233c;
+    --color-excla-darkred: #d32136;
+    --color-excla-black: #2b2d42;
+    --color-excla-offwhite: #edf2f4;
 }

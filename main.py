@@ -89,7 +89,7 @@ class Bot(commands.AutoShardedBot):
 async def main():
     bot = Bot()
     async with bot:
-        bot_task = asyncio.create_task(bot.start(TOKEN))
+        bot_task = asyncio.create_task(bot.start(token=TOKEN))
         app_task = asyncio.create_task(server.serve())
         await asyncio.gather(bot_task, app_task)
 

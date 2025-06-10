@@ -29,6 +29,26 @@ async def root(request: Request):
     )
 
 
+@app.get("/login")
+async def login(request: Request):
+    return "/login"
+
+
+@app.get("/login/confirm")
+async def login_confirm(request: Request):
+    return "/login/confirm"
+
+
+@app.get("/logout")
+async def logout(request: Request):
+    return "/logout"
+
+
+@app.get("/dashboard")
+async def dashboard(request: Request):
+    return "/dashboard"
+
+
 @app.get("/robots.txt")
 async def robots():
     return FileResponse("www/static/robots.txt", media_type="text/plain")

@@ -7,6 +7,7 @@ from typing import Optional
 class Session:
     def __init__(self, session_id: Optional[str] = None):
         self.session_id = session_id
+        self.query = {"_id": self.session_id}
 
     @classmethod
     async def load(cls, session_id: Optional[str] = None):
@@ -32,10 +33,23 @@ class Session:
     async def fetch(session_id: str):
         return await mongo.db.sessions.find_one({"_id": session_id})
 
-    async def get(self, key: str) -> None:
-        query = {"_id": self.session_id}
-        await mongo.db.sessions.find_one()
+    async def get(self, key: str) -> str | None:
+        doc = await mongo.db.sessions.find_one({"_id": self.session_id})
+        if not doc:
+            return None
+        return doc["data"][key]
 
-    async def set(self, key: str): ...
+    async def set(self, key: str, value) -> None:
+        await mongo.db.sessions.update_one(
+            self.query,
+            {"$set": {f"data.{key}": value}},
+        )
 
-    async def destroy(self): ...
+    async def delete(self, key: str):
+        await mongo.db.sessions.update_one(
+            self.query,
+            {"$unset": {f"data.{key}": ""}},
+        )
+
+    async def destroy(self) -> None:
+        await mongo.db.sessions.delete_one(self.query)

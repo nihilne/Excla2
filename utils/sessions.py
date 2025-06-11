@@ -30,8 +30,7 @@ class Session:
 
     @staticmethod
     async def fetch(session_id: str):
-        query = {"_id": session_id}
-        return await mongo.db.sessions.find_one(query)
+        return await mongo.db.sessions.find_one({"_id": session_id})
 
     async def get(self, key: str) -> None:
         query = {"_id": self.session_id}

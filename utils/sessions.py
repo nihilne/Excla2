@@ -1,3 +1,4 @@
+import datetime
 import secrets
 import mongo
 
@@ -5,16 +6,17 @@ from typing import Optional
 
 
 class Session:
-    def __init__(self, session_id: Optional[str] = None):
+    def __init__(self, session_id: Optional[str] = None, is_new: bool = True):
         self.session_id = session_id
         self.query = {"_id": self.session_id}
+        self.is_new = is_new
 
     @classmethod
     async def load(cls, session_id: Optional[str] = None):
         if session_id:
             fetch_session = await cls.fetch(session_id)
             if fetch_session:
-                return cls(fetch_session["_id"])
+                return cls(fetch_session["_id"], False)
 
         new_id = await cls.new()
         return cls(new_id)

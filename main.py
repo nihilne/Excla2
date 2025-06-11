@@ -14,8 +14,8 @@ import random
 
 import discord
 from discord.ext import commands, tasks
+from core.utils import logger, mongo
 
-from utils import logger, mongo
 from app import server
 
 TOKEN = os.environ["TOKEN"]

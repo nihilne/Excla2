@@ -24,6 +24,7 @@ class Session:
         session_id = secrets.token_urlsafe(32)
         data = {
             "_id": session_id,
+            "createdAt": datetime.datetime.now(),
             "data": {},
         }
         await mongo.db.sessions.insert_one(data)

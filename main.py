@@ -18,8 +18,8 @@ from core.utils import logger, mongo
 
 from app import server
 
-TOKEN = os.environ["TOKEN"]
-if not TOKEN:
+DISCORD_TOKEN = os.environ["TOKEN"]
+if not DISCORD_TOKEN:
     raise ValueError("Discord token not found.")
 
 INTENTS = discord.Intents.all()
@@ -89,7 +89,7 @@ class Bot(commands.AutoShardedBot):
 async def main():
     bot = Bot()
     async with bot:
-        bot_task = asyncio.create_task(bot.start(token=TOKEN))
+        bot_task = asyncio.create_task(bot.start(token=DISCORD_TOKEN))
         app_task = asyncio.create_task(server.serve())
         await asyncio.gather(bot_task, app_task)
 

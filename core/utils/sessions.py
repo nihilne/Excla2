@@ -1,8 +1,11 @@
 import datetime
 import secrets
-import mongo
+from typing import Optional, Any
 
-from typing import Optional
+from fastapi import Request
+from fastapi.responses import Response
+
+import core.utils.mongo as mongo
 
 
 class Session:
@@ -36,13 +39,15 @@ class Session:
     async def fetch(session_id: str):
         return await mongo.db.sessions.find_one({"_id": session_id})
 
+    # DATA MANIPULATION
+
     async def get(self, key: str) -> str | None:
         doc = await mongo.db.sessions.find_one({"_id": self.session_id})
         if not doc:
             return None
         return doc["data"][key]
 
-    async def set(self, key: str, value) -> None:
+    async def set(self, key: str, value: Any) -> None:
         await mongo.db.sessions.update_one(
             self.query,
             {"$set": {f"data.{key}": value}},
@@ -56,3 +61,25 @@ class Session:
 
     async def destroy(self) -> None:
         await mongo.db.sessions.delete_one(self.query)
+
+    # COOKIE MANIPULATION
+
+    def set_cookie(self, response: Response) -> None:
+        if self.session_id:
+            return response.set_cookie(
+                key="SID",
+                value=self.session_id,
+                httponly=True,
+                secure=True,
+                samesite="lax",
+                max_age=3600,
+                path="/",
+            )
+
+    @staticmethod
+    def get_cookie(request: Request) -> Optional[str]:
+        return request.cookies.get("SID")
+
+    @staticmethod
+    def clear_cookie(response: Response) -> None:
+        return response.delete_cookie("SID")

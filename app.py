@@ -5,9 +5,9 @@ from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from starlette.middleware.sessions import SessionMiddleware
 
 from core.utils.sessions import Session
+from core.utils.oauth import client
 
 app = FastAPI()
 app.mount(
@@ -15,7 +15,6 @@ app.mount(
     StaticFiles(directory="www/static"),
     name="static",
 )
-templates = Jinja2Templates(directory="www/templates")
 
 config = uvicorn.Config(
     app,
@@ -23,7 +22,9 @@ config = uvicorn.Config(
     port=8000,
     log_level="warning",
 )
+
 server = uvicorn.Server(config)
+templates = Jinja2Templates(directory="www/templates")
 
 
 @app.get("/")
@@ -36,7 +37,16 @@ async def root(request: Request):
 
 @app.get("/login")
 async def login(request: Request):
-    return "/login"
+    sid = Session.get_cookie(request)
+    session = await Session.load(sid)
+    if not session.is_new:
+        return RedirectResponse("/dashboard")
+    else:
+        _state = secrets.token_hex(32)
+        await session.set("state", _state)
+        response = RedirectResponse(client.get_auth_url(_state))
+        Session.set_cookie(session, response)
+        return response
 
 
 @app.get("/login/confirm")

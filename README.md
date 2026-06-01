@@ -2,10 +2,7 @@
 
 <div>
   <p align="center">
-    <img src="https://enitoxy.com/static/img/excla-banner-transparent.png" width="800"> 
-  </p>
-  <p align="center">
-    An open-source Discord bot built with <a href="https://github.com/Rapptz/discord.py">discord.py</a>, supercharged with a FastAPI-powered website/dashboard.
+    An open-source Discord bot built with <a href="https://github.com/Rapptz/discord.py">discord.py</a>.
   </p>
   <p align="center">
     <a href="https://github.com/astral-sh/ruff" style="text-decoration:none">
@@ -25,9 +22,3 @@
     </a>
   </p>
 </div>
-
-# Installation
-
-# Usage
-
-# Contribute

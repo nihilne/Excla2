@@ -1,7 +1,6 @@
 import os
 
 from discord import utils
-
 from aiohttp import BasicAuth, ClientSession
 
 

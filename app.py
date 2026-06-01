@@ -64,15 +64,5 @@ async def dashboard(request: Request):
     return "/dashboard"
 
 
-@app.get("/robots.txt")
-async def robots():
-    return FileResponse("www/static/robots.txt", media_type="text/plain")
-
-
-@app.get("/sitemap.xml")
-async def sitemap():
-    return FileResponse("www/static/sitemap.xml", media_type="text/plain")
-
-
 if __name__ == "__main__":
     server.run()

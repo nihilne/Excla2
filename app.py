@@ -1,12 +1,7 @@
-import secrets
-
 import uvicorn
 from fastapi import FastAPI, Request
-from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-
-from core.utils.sessions import Session
 
 app = FastAPI()
 app.mount(

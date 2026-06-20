@@ -1,12 +1,3 @@
-"""
-cogs.web.py
----
-Author: Enitoxy
-Co-authors: [empty]
-License: GPL-3.0
-Description: A cog/module containing several fun APIs
-"""
-
 from aiohttp import ClientSession
 from discord import Embed, Interaction, app_commands
 from discord.ext import commands

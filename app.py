@@ -7,12 +7,11 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from core.utils.sessions import Session
-from core.utils.oauth import client
 
 app = FastAPI()
 app.mount(
     "/static",
-    StaticFiles(directory="www/static"),
+    StaticFiles(directory="public/static"),
     name="static",
 )
 
@@ -24,7 +23,7 @@ config = uvicorn.Config(
 )
 
 server = uvicorn.Server(config)
-templates = Jinja2Templates(directory="www/templates")
+templates = Jinja2Templates(directory="public/templates")
 
 
 @app.get("/")
@@ -33,35 +32,6 @@ async def root(request: Request):
         request=request,
         name="home/index.html",
     )
-
-
-@app.get("/login")
-async def login(request: Request):
-    sid = Session.get_cookie(request)
-    session = await Session.load(sid)
-    if not session.is_new:
-        return RedirectResponse("/dashboard")
-    else:
-        _state = secrets.token_hex(32)
-        await session.set("state", _state)
-        response = RedirectResponse(client.get_auth_url(_state))
-        Session.set_cookie(session, response)
-        return response
-
-
-@app.get("/login/confirm")
-async def login_confirm(request: Request):
-    return "/login/confirm"
-
-
-@app.get("/logout")
-async def logout(request: Request):
-    return "/logout"
-
-
-@app.get("/dashboard")
-async def dashboard(request: Request):
-    return "/dashboard"
 
 
 if __name__ == "__main__":

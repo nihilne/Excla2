@@ -1,12 +1,3 @@
-"""
-main.py
----
-Author: Enitoxy
-Co-authors: [empty]
-License: GPL-3.0
-Description: The main file, aka entry point
-"""
-
 import asyncio
 import logging
 import os
@@ -14,9 +5,13 @@ import random
 
 import discord
 from discord.ext import commands, tasks
-from core.utils import logger, mongo
+from core.utils import logger
+
+from dotenv import load_dotenv
 
 from app import server
+
+load_dotenv()
 
 DISCORD_TOKEN = os.environ["TOKEN"]
 if not DISCORD_TOKEN:
@@ -39,14 +34,12 @@ class Bot(commands.AutoShardedBot):
         log.info(f"{len(self.guilds)} servers")
 
     async def close(self):
-        await mongo.db.close()
         log.info("Shutting down...")
 
     async def load_cogs(self):
         """Loads cogs from a specific directory"""
         for cog_file in os.listdir("./cogs"):
             if cog_file.endswith("indev"):
-                log.info("Ignoring indev folder...")
                 pass
 
             if cog_file.endswith(".py"):
@@ -58,9 +51,8 @@ class Bot(commands.AutoShardedBot):
         """Changes the bot's status message every 2 minutes"""
         status_list = [
             "beep boop",
-            "Supports slash commands!",
             "boop beep boop?",
-            f"I'm in {len(self.guilds)} servers",
+            f"In {(n := len(self.guilds))} {'servers' if n > 1 else 'server'}.",
         ]
         status = random.choice(status_list)
         activity = discord.CustomActivity(name=status)
@@ -76,10 +68,9 @@ class Bot(commands.AutoShardedBot):
         self.status_task.start()
         log.info("Started tasks")
 
-    # Set up and start tasks, load cogs, sync tree
     async def setup_hook(self):
+        """Starts tasks, loads cogs, syncs tree"""
         await logger.setup_custom_format()
-        await mongo.db.connect()
         await self.start_tasks()
         await self.load_cogs()
         await self.tree.sync()
@@ -87,6 +78,7 @@ class Bot(commands.AutoShardedBot):
 
 
 async def main():
+    """Runs the bot and website"""
     bot = Bot()
     async with bot:
         bot_task = asyncio.create_task(bot.start(token=DISCORD_TOKEN))

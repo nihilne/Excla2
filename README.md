@@ -11,9 +11,6 @@
     <a href="https://github.com/fastapi/fastapi" style="text-decoration:none">
         <img src="https://img.shields.io/badge/FastAPI-005571?logo=fastapi">
     </a>
-    <a href="https://htmx.org/" style="text-decoration:none">
-      <img src="https://img.shields.io/badge/HTMX-36C?logo=htmx&logoColor=fff">
-    </a>
     <a href="https://tailwindcss.com/" style="text-decoration:none">
       <img src="https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?logo=tailwind-css&logoColor=white">
     </a>

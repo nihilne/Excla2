@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}Excla!{% endblock %}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}" />
+    <link rel="canonical" href="https://bot.excla.xyz" />
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', path='assets/favicon.ico') }}" />
+    <meta name="title" content="Excla!" property="og:title" />
+    <meta name="url" content="https://bot.excla.xyz" property="og:url" />
+    <meta name="theme-color" content="#edf2f4" property="og:theme-color" />
+    <meta name="type" content="website" property="og:type" />
+    <meta name="keywords" content="Discord, Discord Bot, Excla, Slash Commands, Bot" property="og:keywords" />
+    <meta name="description" content="Discord Bot" property="og:description" />
+</head>
+
+<body class="bg-excla-offwhite min-h-screen flex flex-col">
+    {% include "partials/header.html" %}
+    <div class="flex-1 m-6">
+        {% block content %}
+        {% endblock %}
+    </div>
+    {% include "partials/footer.html" %}
+</body>
+
+</html>

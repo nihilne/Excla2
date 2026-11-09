@@ -1,6 +1,5 @@
 import discord
 
-
 EMOJIS = {
     "rock": "<:rock:1350209723072512101>",
     "paper": "<:paper:1350209734673960960>",

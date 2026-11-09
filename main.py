@@ -1,13 +1,13 @@
 import asyncio
 import logging
 import os
+from pathlib import Path
 
-import discord
-from discord.ext import commands
+from discord import Intents, __version__
+from discord.ext.commands import AutoShardedBot
 from dotenv import load_dotenv
 
-from app import server
-from core.utils import logger
+from core.utils.logger import setup_custom_logging_format
 
 load_dotenv()
 
@@ -15,50 +15,49 @@ DISCORD_TOKEN = os.environ["TOKEN"]
 if not DISCORD_TOKEN:
     raise ValueError("Discord token not found.")
 
-INTENTS = discord.Intents.all()
-COMMAND_PREFIX = "/"
+BASE_DIR = Path(__file__).resolve().parent
+COGS_DIR = BASE_DIR / "cogs"
 
 log = logging.getLogger("main")
 
 
-class Bot(commands.AutoShardedBot):
-    def __init__(self):
-        super().__init__(command_prefix=COMMAND_PREFIX, intents=INTENTS)
+class Bot(AutoShardedBot):
+    def __init__(self, command_prefix, intents):
+        super().__init__(command_prefix=command_prefix, intents=intents)
 
     async def on_ready(self):
         log.info("Excla! is online!")
-        log.info(f"Latency: {round(self.latency, 4)}ms")
-        log.info(f"Discord.py: {discord.__version__}")
+        log.info(f"Latency: {round(self.latency * 1000, 2)}ms")
+        log.info(f"discord.py: {__version__}")
         log.info(f"{len(self.guilds)} servers")
 
     async def close(self):
         log.info("Shutting down...")
+        await super().close()
 
-    async def load_cogs(self):
+    async def load_cogs(self, directory: str | Path):
         """Loads cogs from a specific directory"""
-        for cog_file in os.listdir("./cogs"):
-            if cog_file.endswith("indev"):
-                pass
+        directory = Path(directory)
+        package = directory.name
 
-            if cog_file.endswith(".py"):
-                await self.load_extension(f"cogs.{cog_file[:-3]}")
-                log.info(f"Loaded {cog_file}")
+        for cog_file in directory.glob("*.py"):
+            if cog_file.stem == "__init__":
+                continue
+            await self.load_extension(f"{package}.{cog_file.stem}")
+            log.info(f"Loaded {cog_file.name}")
 
     async def setup_hook(self):
-        """Starts tasks, loads cogs, syncs tree"""
-        await logger.setup_custom_format()
-        await self.load_cogs()
+        """Loads the cogs and syncs tree"""
+        await setup_custom_logging_format()
+        await self.load_cogs(COGS_DIR)
         await self.tree.sync()
         log.info("Synced tree")
 
 
 async def main():
-    """Runs the bot and website"""
-    bot = Bot()
-    async with bot:
-        bot_task = asyncio.create_task(bot.start(token=DISCORD_TOKEN))
-        app_task = asyncio.create_task(server.serve())
-        await asyncio.gather(bot_task, app_task)
+    """Runs the bot"""
+    bot = Bot(command_prefix="/", intents=Intents.all())
+    await bot.start(token=DISCORD_TOKEN)
 
 
 if __name__ == "__main__":

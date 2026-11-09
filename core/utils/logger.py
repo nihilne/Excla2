@@ -5,14 +5,9 @@ from colorama import Fore
 log = logging.getLogger(__name__)
 
 
-async def setup_custom_format():
+async def setup_custom_logging_format():
     formatter = logging.Formatter(
-        "{0}[%(asctime)s] {1}[%(levelname)s] {2}%(name)s {3}- %(message)s".format(
-            Fore.GREEN,
-            Fore.BLUE,
-            Fore.MAGENTA,
-            Fore.RESET,
-        ),
+        f"{Fore.GREEN}[%(asctime)s] {Fore.BLUE}[%(levelname)s] {Fore.MAGENTA}%(name)s {Fore.RESET}- %(message)s",
         "%d-%m-%Y %H:%M:%S",
     )
 

@@ -1,21 +1,21 @@
 import datetime
 import secrets
-from typing import Optional, Any
+from typing import Any
 
+from cachetools import TTLCache
 from fastapi import Request
 from fastapi.responses import Response
-from cachetools import TTLCache
 
 _cache: TTLCache = TTLCache(maxsize=1024, ttl=3600)
 
 
 class Session:
-    def __init__(self, session_id: Optional[str] = None, is_new: bool = True):
+    def __init__(self, session_id: str | None = None, is_new: bool = True):
         self.session_id = session_id
         self.is_new = is_new
 
     @classmethod
-    async def load(cls, session_id: Optional[str] = None):
+    async def load(cls, session_id: str | None = None):
         if session_id:
             fetch_session = await cls.fetch(session_id)
             if fetch_session:
@@ -73,7 +73,7 @@ class Session:
             )
 
     @staticmethod
-    def get_cookie(request: Request) -> Optional[str]:
+    def get_cookie(request: Request) -> str | None:
         return request.cookies.get("SID")
 
     @staticmethod

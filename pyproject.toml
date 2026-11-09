@@ -1,0 +1,31 @@
+[project]
+name = "excla2"
+version = "0.1.0"
+description = "Excla!, an open-source Discord bot."
+readme = "README.md"
+license = "GPL-3.0"
+authors = [
+    { name = "nihilne", email = "85189523+nihilne@users.noreply.github.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "cachetools==8.0.0",
+    "colorama==0.4.6",
+    "discord-py==2.7.1",
+    "fastapi==0.162.2",
+    "itsdangerous==2.2.0",
+    "jinja2==3.1.6",
+    "python-dotenv>=1.2.4",
+    "uvicorn==0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "taskipy>=1.14.1",
+]
+
+[tool.uv]
+package = false
+
+[tool.taskipy.tasks]
+dev = "python main.py"

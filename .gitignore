@@ -171,6 +171,4 @@ cython_debug/
 .pypirc
 
 # Project-specific files/directories
-certs/
 .vscode
-styles.css

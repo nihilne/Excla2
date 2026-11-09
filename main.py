@@ -5,11 +5,10 @@ import random
 
 import discord
 from discord.ext import commands, tasks
-from core.utils import logger
-
 from dotenv import load_dotenv
 
 from app import server
+from core.utils import logger
 
 load_dotenv()
 

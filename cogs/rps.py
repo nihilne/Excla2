@@ -68,8 +68,8 @@ def choices_embed(
     return embed
 
 
-class Fun(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
+class RPS(commands.Cog):
+    def __init__(self, bot: commands.AutoShardedBot) -> None:
         self.bot = bot
 
     async def rps_game(self, interaction: discord.Interaction, session: RPSSession):
@@ -136,5 +136,5 @@ class Fun(commands.Cog):
         await self.rps_game(interaction, RPSSession())
 
 
-async def setup(bot):
-    await bot.add_cog(Fun(bot))
+async def setup(bot: commands.AutoShardedBot):
+    await bot.add_cog(RPS(bot))

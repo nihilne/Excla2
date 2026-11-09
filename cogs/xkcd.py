@@ -15,9 +15,8 @@ class Web(commands.Cog):
 
         url = "https://xkcd.com/info.0.json"
 
-        async with ClientSession() as session:
-            async with session.get(url) as request:
-                response = await request.json()
+        async with ClientSession() as session, session.get(url) as request:
+            response = await request.json()
 
         embed = Embed(
             title=response["safe_title"],

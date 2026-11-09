@@ -68,8 +68,12 @@ class Bot(AutoShardedBot):
 async def main():
     """Runs the bot"""
     bot = Bot(command_prefix="/")
-    await bot.start(token=DISCORD_TOKEN)
+    async with bot:
+        await bot.start(token=DISCORD_TOKEN)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        pass

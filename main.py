@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 
 from discord import Intents, __version__
+from discord.app_commands import AppCommandContext, AppInstallationType
 from discord.ext.commands import AutoShardedBot
 from dotenv import load_dotenv
 
@@ -22,8 +23,18 @@ log = logging.getLogger("main")
 
 
 class Bot(AutoShardedBot):
-    def __init__(self, command_prefix, intents):
-        super().__init__(command_prefix=command_prefix, intents=intents)
+    def __init__(self, command_prefix):
+        super().__init__(
+            command_prefix=command_prefix,
+            intents=Intents.all(),
+            allowed_contexts=AppCommandContext(
+                guild=True, dm_channel=True, private_channel=True
+            ),
+            allowed_installs=AppInstallationType(
+                guild=True,
+                user=True,
+            ),
+        )
 
     async def on_ready(self):
         log.info("Excla! is online!")
@@ -56,7 +67,7 @@ class Bot(AutoShardedBot):
 
 async def main():
     """Runs the bot"""
-    bot = Bot(command_prefix="/", intents=Intents.all())
+    bot = Bot(command_prefix="/")
     await bot.start(token=DISCORD_TOKEN)
 
 
